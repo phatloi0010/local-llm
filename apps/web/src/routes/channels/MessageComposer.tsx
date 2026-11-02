@@ -151,13 +151,14 @@ export const MessageComposer = forwardRef<
 		const insert = `${mentionText(s)} `;
 		const next = text.slice(0, active.start) + insert + text.slice(cursor);
 		const pos = active.start + insert.length;
+		if (textareaRef.current) {
+			textareaRef.current.value = next;
+			textareaRef.current.setSelectionRange(pos, pos);
+		}
 		setText(next);
+		setCursor(pos);
 		// One entry per insertion, in order: encodeMentions gives same-label mentions their occurrences in this order.
 		setMentions((ms) => [...ms, { kind: s.kind, id: s.id, label: s.label }]);
-		requestAnimationFrame(() => {
-			textareaRef.current?.setSelectionRange(pos, pos);
-			setCursor(pos);
-		});
 	};
 
 	const addFiles = (list: File[]) => {

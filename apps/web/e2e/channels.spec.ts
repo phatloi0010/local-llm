@@ -190,6 +190,7 @@ test('sends a message with a mention, shows it at once, and reacts, pins, edits 
 	const suggestions = page.getByRole('listbox', { name: 'Mention suggestions' });
 	await expect(suggestions.getByRole('option')).toHaveText([/^Ann/, /^Annika/]);
 	await page.keyboard.press('Enter');
+	await expect(suggestions).toBeHidden();
 	await expect(box).toHaveValue('hi @Ann ');
 	await box.pressSequentially('welcome');
 	await page.keyboard.press('Enter');

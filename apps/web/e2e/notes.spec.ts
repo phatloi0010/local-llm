@@ -159,6 +159,7 @@ test('editing autosaves the title and the body as html, markdown and json', asyn
 	await editor.getByText('Body of Groceries').click();
 	await expect(editor).toBeFocused();
 	await page.keyboard.press('End');
+	await expect.poll(() => page.evaluate(() => getSelection()?.focusOffset)).toBe(17);
 	await page.keyboard.press('Enter');
 	await page.keyboard.type('## Produce');
 	await expect.poll(() => seen.updates.at(-1)?.data?.content?.md).toBe('Body of Groceries\n\n## Produce');

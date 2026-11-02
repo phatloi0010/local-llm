@@ -81,6 +81,10 @@ export function RichTextEditor({
 				'aria-label': ariaLabel,
 				role: 'textbox',
 				'aria-multiline': 'true'
+			},
+			handleKeyDown: (view) => {
+				view.dom.ownerDocument.dispatchEvent(new Event('selectionchange'));
+				return false;
 			}
 		},
 		onUpdate: ({ editor: e }) => {
@@ -95,7 +99,7 @@ export function RichTextEditor({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [editor]);
 	useEffect(() => {
-		editor?.setEditable(editable);
+		if (editor && editor.isEditable !== editable) editor.setEditable(editable);
 	}, [editor, editable]);
 	// A new document (another note, a restored version): replace the content without reporting it as an edit.
 	const firstKey = useRef(contentKey);
